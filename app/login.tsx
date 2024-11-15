@@ -1,6 +1,6 @@
 import { Ionicons, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, Dimensions, Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 
 import { useGetUserQuery, useLoginMutation } from '@/redux/features/authApiSlice'
@@ -8,12 +8,14 @@ import { useGetUserQuery, useLoginMutation } from '@/redux/features/authApiSlice
 import Toast from 'react-native-toast-message'
 import storeToken from '@/utils/storeToken'
 import { useRouter } from 'expo-router'
+import { useNotificationSocket } from '@/providers'
 
 const { height, width } = Dimensions.get('window');
 
 const LoginScreen = () => {
     const {data:currentUser, refetch} = useGetUserQuery()
     const router = useRouter()
+    const notificationSocket = useNotificationSocket()
 
   const [secureEntry, setSecureEntry] = useState(true);
 
@@ -22,6 +24,24 @@ const LoginScreen = () => {
 
   const [login, {data, isSuccess, isError, isLoading}] = useLoginMutation();
 
+  useEffect(()=>{
+    if(isSuccess){
+        Toast.show({
+            text1: 'Logged in successfully!',
+            type:'success',
+            visibilityTime: 2000,
+
+        })
+    }
+    if(isError){
+        Toast.show({
+            text1: 'Error logging in',
+            text2: 'Please check your credentials',
+            type: 'error',
+            visibilityTime: 2000,
+        })
+    }
+  },[isSuccess, isError])
 
   const handleLogin = async() => {
 
@@ -44,7 +64,7 @@ const LoginScreen = () => {
     }
     try{
       const data = await login({email: email, password: pass}).unwrap();
-      console.log(data)
+
         await storeToken('accessToken',data.access);
         await storeToken('refreshToken',data.refresh)
         Toast.show({
@@ -53,6 +73,7 @@ const LoginScreen = () => {
           visibilityTime: 1000,
         })
         refetch()
+        notificationSocket.connect()
         router.push('/')
 
     }catch(error){
@@ -65,7 +86,7 @@ const LoginScreen = () => {
   };
 
   const forgotPassword = () => {
-    router.push('/')
+    router.push('/forgot-password')
   };
 
 

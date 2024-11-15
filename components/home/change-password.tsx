@@ -1,7 +1,9 @@
+import { useRouter } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 export default function ChangePassword (){
-    return <TouchableOpacity style={styles.mainContainer} onPress={()=>{}}>
+    const router = useRouter()
+    return <TouchableOpacity style={styles.mainContainer} onPress={()=>{router.push('/change-password')}}>
             <Text>Change Password</Text>
     </TouchableOpacity>
 }

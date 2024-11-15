@@ -6,6 +6,7 @@ import { useState } from "react"
 import EditProfile from "./edit-profile"
 import ChangePassword from "./change-password"
 import { Logout } from "./logout"
+import Deactivate from "./deactivate"
 
 type HeaderProps = {
     user:z.infer<typeof UserSchema>
@@ -22,8 +23,8 @@ return <View style={styles.mainContainer}>
         <View style={styles.modalView}>
             <EditProfile user={user}/>
             <ChangePassword />
+            <Deactivate user={user}/>
             <Logout />
-
             <TouchableOpacity onPress={()=>{setModalVisible(false)}}>
                 <Text>Close</Text>
             </TouchableOpacity>
@@ -38,7 +39,7 @@ return <View style={styles.mainContainer}>
 
 const EditButton = ({onPress}:{onPress:()=>void}) => {
     return <TouchableOpacity style={styles.editButton} onPress={onPress}>
-        <Ionicons style={{}} name="ellipsis-horizontal-outline"/>
+        <Ionicons size={20} style={{}} name="ellipsis-vertical"/>
     </TouchableOpacity>
 }
 
@@ -51,7 +52,10 @@ const styles = StyleSheet.create({
     editButton:{
         position:'absolute',
         top:10,
-        right:10
+        right:10,
+
+        padding:3,
+        borderRadius:15
     },
     mainContainer:{
         padding:10,

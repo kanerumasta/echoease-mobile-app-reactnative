@@ -10,8 +10,8 @@ type MenuButtonProps = {
 
 export const MenuButton = ({ label, icon, route }: MenuButtonProps) => {
   return (
-    <Link href={route}> 
-      <LinearGradient colors={['#00F2FE', '#48F7B8']} style={styles.mainContainer}>
+    <Link href={route}>
+      <LinearGradient colors={['#00F2FE', 'rgba(0, 146, 255, 0.82)']} style={styles.mainContainer}>
         <View style={{ display: 'flex', alignItems: 'center' }}>
           {icon}
           <Text style={styles.label}>{label}</Text>

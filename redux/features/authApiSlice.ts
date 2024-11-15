@@ -23,6 +23,13 @@ const authApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ["CurrentUser"]
         }),
+        resetPassword: builder.mutation({
+            query: (email) => ({
+              url: "/users/reset_password/",
+              method: "POST",
+              body: { email },
+            }),
+          }),
 
         logoutUser: builder.mutation<any, void>({
             query: () => ({
@@ -30,9 +37,25 @@ const authApiSlice = apiSlice.injectEndpoints({
               method: "POST",
             }),
           }),
+          activateUser:builder.mutation<any, void>({
+            query: () => ({
+              url: "/activate/",
+              method: "POST",
+
+            }),
+            invalidatesTags:['CurrentUser']
+          }),
+          deactivateUser:builder.mutation<any, void>({
+            query: () => ({
+              url: "/deactivate/",
+              method: "POST",
+
+            }),
+            invalidatesTags:['CurrentUser']
+          }),
     })
 })
 
-export const {useLogoutUserMutation,useLoginMutation, useGetUserQuery, useUploadImageMutation} = authApiSlice;
+export const {useDeactivateUserMutation,useActivateUserMutation,useResetPasswordMutation,useLogoutUserMutation,useLoginMutation, useGetUserQuery, useUploadImageMutation} = authApiSlice;
 
 export default authApiSlice;

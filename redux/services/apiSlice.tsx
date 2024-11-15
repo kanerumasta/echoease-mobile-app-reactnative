@@ -5,7 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const mutex = new Mutex();
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'http://192.168.56.1:8000/api',
+  baseUrl: 'http://192.168.1.242:8000/api',
   prepareHeaders: async (headers) => {
     const accessToken = await AsyncStorage.getItem('access');
     if (accessToken) {

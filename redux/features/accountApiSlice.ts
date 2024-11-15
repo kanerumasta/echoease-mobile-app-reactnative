@@ -48,7 +48,7 @@ const AccountApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["CurrentUser", "CurrentArtist"],
     }),
-    changePassword: builder.mutation<any, any>({
+    changePassword: builder.mutation<any, {old_password:string, new_password:string}>({
       query: (data) => ({
         url: "/change-password",
         method: "POST",

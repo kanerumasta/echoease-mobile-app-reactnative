@@ -6,15 +6,18 @@ import { useLogoutUserMutation, useGetUserQuery } from "@/redux/features/authApi
 import apiSlice from "@/redux/services/apiSlice"
 import { useDispatch } from "react-redux"
 import { useRouter } from "expo-router"
+import { useNotificationSocket } from "@/providers"
 
 export const Logout = ()  => {
     const dispatch = useDispatch()
+    const notificationSocket = useNotificationSocket()
     const [logoutUser ] = useLogoutUserMutation()
     const router = useRouter()
     const handleLogout = async () => {
         dispatch(apiSlice.util.resetApiState())
         await AsyncStorage.clear()
         await logoutUser()
+        notificationSocket.disconnect() //disconnect from notification socket
         router.replace('/login')
     }
     return <TouchableOpacity style={styles.mainContainer} onPress={handleLogout}>

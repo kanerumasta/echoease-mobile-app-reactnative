@@ -21,7 +21,7 @@ export const NotificationInSchema = z.object({
   title: z.string(),
   description: z.string(),
   is_read: z.boolean(),
-  create_at: z.string(),
+  created_at: z.string(),
   user: UserSchema.nullable(),
   booking: BookInSchema.nullable(),
   message: MessageSchema.nullable(),

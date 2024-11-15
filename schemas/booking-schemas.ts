@@ -56,6 +56,7 @@ export const BookingSchema = z
 
 export const BookInSchema = z.object({
   id: z.number(),
+  amount:z.string(),
   event_date: z.string(),
   booking_reference: z.string(),
   is_completed: z.boolean(),
@@ -81,7 +82,8 @@ export const BookInSchema = z.object({
   is_event_due: z.boolean(),
   rate: RateSchema,
   location: z.string(),
-  disputes : z.array(DisputeSchema)
+  disputes : z.array(DisputeSchema),
+  venue:z.string().nullable()
 });
 
 export const PaginatedBookInSchema = z.object({

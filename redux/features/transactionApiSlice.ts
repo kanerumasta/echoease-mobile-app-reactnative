@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { PaginatedTransactionSchema } from "../../schemas/transaction-schemas";
+import { PaginatedTransactionSchema, TransactionSchema } from "../../schemas/transaction-schemas";
 
 import { apiSlice } from "../services/apiSlice";
 
@@ -16,7 +16,11 @@ const transactionApiSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ["Transactions"],
     }),
+    fetchTransactionDetail:builder.query<z.infer<typeof TransactionSchema>, string>({
+        query:(id) => `/transactions/${id}`
+      })
   }),
+
 });
 
-export const { useFetchTransactionsQuery } = transactionApiSlice;
+export const { useFetchTransactionsQuery, useFetchTransactionDetailQuery } = transactionApiSlice;

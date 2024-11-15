@@ -60,6 +60,7 @@ export const UserSchema = z.object({
   has_echoee_application: z.boolean(),
   business_name: z.string().nullable(),
   business_image: z.string().nullable(),
+  is_deactivated: z.boolean()
 });
 
 export const RolePickingSchema = z.object({

@@ -1,20 +1,22 @@
-import { useEffect, useState } from "react"
-import { ActivityIndicator, FlatList, StyleSheet, Text, View } from "react-native"
-import { z } from "zod"
-import { useFetchArtistsWithFilterQuery } from "../../redux/features/artistApiSlice"
-import { ArtistInSchema } from "../../schemas/artist-schemas"
-import { EchoeeCard } from "./echoee-card"
-import { EchoeeCardSkeleton } from "./echoee-card-skeleton"
-
+import { useEffect, useState } from "react";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import { z } from "zod";
+import { useFetchArtistsWithFilterQuery } from "../../redux/features/artistApiSlice";
+import { ArtistInSchema } from "../../schemas/artist-schemas";
+import { EchoeeCard } from "./echoee-card";
+import { EchoeeCardSkeleton } from "./echoee-card-skeleton";
 
 type EchoeeGroupProps = {
     category: string,
-    title: string
-}
+    title: string,
+    refresh: number
+};
 
-export const EchoeeGroup = ({ title, category }: EchoeeGroupProps) => {
-    const [page, setPage] = useState(1)
-    const [loading, setLoading] = useState(false)
+export const EchoeeGroup = ({ title, category, refresh }: EchoeeGroupProps) => {
+    const [page, setPage] = useState(1);
+    const [loading, setLoading] = useState(false);
+
+    // Fetch query
     const { data: echoees, isLoading, isFetching } = useFetchArtistsWithFilterQuery({
         q: null,
         max_price: null,
@@ -22,80 +24,80 @@ export const EchoeeGroup = ({ title, category }: EchoeeGroupProps) => {
         genres: [],
         category: category,
         page: page
-    })
+    });
 
-    const [combinedEchoees, setCombinedEchoees] = useState<z.infer<typeof ArtistInSchema>[]>()
+    // Combined state for all fetched results
+    const [combinedEchoees, setCombinedEchoees] = useState<z.infer<typeof ArtistInSchema>[]>([]);
 
-    useEffect(()=>{
-        setCombinedEchoees([])
-    },[])
 
+    // Effect to reset data when component mounts or when `refresh` changes
+    useEffect(() => {
+        setPage(1);              // Reset to the first page
+        setLoading(true);        // Start loading to trigger fetch
+    }, [refresh]);
+
+    // Effect to handle changes to the `echoees` data and combine unique results
     useEffect(() => {
         if (echoees && echoees.results) {
-            setCombinedEchoees(prev => [...(prev || []), ...echoees.results]);
-            setLoading(false);  // Stop loading once new data is fetched
+            if(page === 1){
+                setCombinedEchoees(echoees.results)
+            }
+            else{
+            setCombinedEchoees((prev) => {
+                const allEchoees = [...(prev || []), ...echoees.results];
+                // Ensure uniqueness by id
+                const uniqueEchoees = Array.from(new Map(allEchoees.map(item => [item.id, item])).values());
+                return uniqueEchoees;
+            });
         }
-    }, [echoees])
+            setLoading(false);  // Stop loading after setting new data
+        }
+    }, [echoees]);
 
+    // Function to load more data if available
     const loadMore = () => {
-        if(isLoading || isFetching){
-            return
+        if (isLoading || isFetching) {
+            return;  // Prevent loading more if already fetching
         }
-        if(echoees && echoees.has_next) setPage(prev=>prev+1)
-    }
+        if (echoees && echoees.has_next) setPage(prev => prev + 1);  // Load next page if available
+    };
 
     return (
         <View>
-            <Text style={styles.title}>{title}</Text>
+            {echoees && echoees.count > 0 &&<Text style={styles.title}>{title}</Text>}
             <FlatList
                 horizontal
                 data={combinedEchoees}
-                renderItem={({item})=>(
-                    <EchoeeCard key={item.id} echoee={item} />
-                )}
+                renderItem={({ item }) => <EchoeeCard key={item.id} echoee={item} />}
+                keyExtractor={(item) => item.id.toString()}
                 onEndReached={loadMore}
                 onEndReachedThreshold={2}
                 showsHorizontalScrollIndicator={false}
                 ListFooterComponent={
                     (isLoading || isFetching) ? (
                         page === 1 ? (
-                          <View style={{ flexDirection: 'row' }}>
-                            <EchoeeCardSkeleton />
-                            <EchoeeCardSkeleton />
-                            <EchoeeCardSkeleton />
-                            <EchoeeCardSkeleton />
-                            <EchoeeCardSkeleton />
-                          </View>
+                            <View style={{ flexDirection: 'row' }}>
+                                <EchoeeCardSkeleton />
+                                <EchoeeCardSkeleton />
+                                <EchoeeCardSkeleton />
+                                <EchoeeCardSkeleton />
+                                <EchoeeCardSkeleton />
+                            </View>
                         ) : (
-                          <EchoeeCardSkeleton />
+                            <EchoeeCardSkeleton />
                         )
-                      ) : null
-                  }
+                    ) : null
+                }
             />
-
         </View>
-
-    )
-}
-
-
+    );
+};
 
 const styles = StyleSheet.create({
-    scrollView: {
-        display: 'flex',
-        flexDirection: 'row',
-        gap: 6,
-    },
     title: {
         color: 'rgba(255,255,255,0.7)',
         fontSize: 18,
         padding: 8,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
-    loaderContainer: {
-        width: 150,
-        height: 150,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-})
+});
