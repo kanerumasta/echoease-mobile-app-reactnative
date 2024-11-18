@@ -61,7 +61,7 @@ export default function TransactionDetail() {
           )}
 
           <View style={styles.receiptHeader}>
-            <Text style={{fontSize:20, fontWeight:'bold', textTransform:'capitalize',color:'dodgerblue', textAlign:'center'}}>{transaction.payment.title}</Text>
+            <Text style={{fontSize:20, fontWeight:'bold', textTransform:'capitalize',color:'dodgerblue', textAlign:'center'}}>{transaction.title ? transaction.title : transaction.payment.title}</Text>
           </View>
 
           <View style={{paddingVertical:10, flexDirection: "row", alignItems: "center", justifyContent:'space-between' }}>

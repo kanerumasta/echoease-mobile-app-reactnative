@@ -184,8 +184,11 @@ const NotificationCard = ({
         if (type.split("_").includes("booking")) {
           router.push("/bookings");
         }
-        if (type.split("_").includes("dibursement") || type.split("_").includes("downpayment")) {
+        if (type.split("_").includes("dibursement") || type === "downpayment") {
           router.push(`/transactions`);
+        }
+        if (type === 'downpayment_paid' && item.booking?.id) {
+         router.push(`/bookings/${item.booking?.id.toString()}`);
         }
       }
     };

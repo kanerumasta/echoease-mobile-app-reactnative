@@ -44,7 +44,7 @@ export const TransactionCard=({transaction}:TransactionCardProps) => {
                     <Text style={styles.description}>{transaction.formatted_time}</Text>
                 </View> :
                 <Text style={styles.description}>{transaction.formatted_created_at}</Text>}
-            <Text style={styles.title}>{transaction.payment.title}</Text>
+            <Text style={styles.title}>{transaction.title ?transaction.title :  transaction.payment.title}</Text>
 
         </View>
         <View>

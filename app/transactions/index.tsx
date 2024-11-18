@@ -7,6 +7,7 @@ export default function Transactions(){
     const [page,setPage] = useState(1)
     const {data:transactions, isLoading, refetch} = useFetchTransactionsQuery(page,{refetchOnMountOrArgChange:true})
 
+    console.log(transactions)
     const handleFetchNext = () => {
         if(transactions?.has_next && !isLoading){
             setPage(prev => prev+1)
