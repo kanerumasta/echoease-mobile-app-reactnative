@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, Modal, TouchableOpacity, Dimensions, Pressable, Linking, TextInput, TextInputComponent } from 'react-native'
+import { View, Text, StyleSheet, Image, Modal, TouchableOpacity, Dimensions, Pressable, Linking, TextInput, TextInputComponent, ScrollView } from 'react-native'
 import React, { useRef, useState } from 'react'
 import { z } from 'zod'
 import { BookingSchema, BookInSchema } from '@/schemas/booking-schemas'
@@ -10,6 +10,7 @@ import { useGetUserQuery } from '@/redux/features/authApiSlice'
 import Dialog from 'react-native-dialog'
 import { useConfirmBookingMutation, useRejectBookingMutation } from '@/redux/features/bookingApiSlice'
 import { Picker } from '@react-native-picker/picker'
+import MapView, { Marker } from 'react-native-maps'
 
 const BookingCard = ({booking}:{booking:z.infer<typeof BookInSchema>}) => {
     const [modalVisible, setModalVisible] = React.useState(false);
@@ -92,6 +93,7 @@ const BookingCard = ({booking}:{booking:z.infer<typeof BookInSchema>}) => {
                 setModalVisible(false)
             }}
         >
+            <ScrollView>
            <View style={styles.modalContainer}>
                 {/* Image */}
                 <View style={{position:'relative'}}>
@@ -112,7 +114,7 @@ const BookingCard = ({booking}:{booking:z.infer<typeof BookInSchema>}) => {
                     <View style={{flexDirection:'row', gap:6, paddingVertical:6}}>
                         <Ionicons name="headset-sharp" size={24} color={"dodgerblue"} style={{opacity:0.7}}/>
                         <View>
-                            <Text style={{fontSize:14, color:'rgba(0,0,0,0.8)',fontWeight:'bold', textTransform:'capitalize'}}>{booking.event_name}</Text>
+                            <Text style={{fontSize:14, color:'rgba(0,0,0,0.8)',fontWeight:'bold', textTransform:'capitalize'}}>{booking.id}</Text>
                         </View>
                     </View>
                     <View style={{flexDirection:'row', gap:6, paddingVertical:6}}>
@@ -161,7 +163,39 @@ const BookingCard = ({booking}:{booking:z.infer<typeof BookInSchema>}) => {
                 }
 
                 </View>
+                {booking.latitude && booking.longitude &&
+                <View style={{marginTop:20,height:Dimensions.get('window').height * 0.5,backgroundColor:'blue', borderRadius:20, overflow:'hidden', margin:15}}>
+                    <MapView
+                        style={{flex:1, borderRadius:10}}
+                        showsBuildings={true}
+
+                        showsMyLocationButton={true}
+                        showsUserLocation={true}
+                        tintColor='dodgerblue'
+
+                        initialRegion={{
+                            latitude: booking.latitude,
+                            longitude: booking.longitude,
+                            latitudeDelta: 0.1,
+                            longitudeDelta: 0.1
+                        }}
+                    >
+                        <Marker
+
+
+                            coordinate={{latitude: booking.latitude, longitude: booking.longitude}}
+                            title={booking.venue?.toUpperCase() || "Event Venue"}
+                            description={booking.location}
+                            pinColor='dodgerblue'
+
+                        />
+
+
+                    </MapView>
+             </View>
+}
            </View>
+           </ScrollView>
         </Modal>
         <Dialog.Container visible={dialogVisible}>
             <Dialog.Title>Confirm Booking</Dialog.Title>
@@ -234,7 +268,7 @@ const styles = StyleSheet.create({
     },
     modalContainer:{
         backgroundColor:'#fff',
-        height:Dimensions.get('window').height,
+        minHeight:Dimensions.get('window').height,
 
     },
     modalContent:{

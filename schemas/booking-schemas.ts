@@ -83,7 +83,9 @@ export const BookInSchema = z.object({
   rate: RateSchema,
   location: z.string(),
   disputes : z.array(DisputeSchema),
-  venue:z.string().nullable()
+  venue:z.string().nullable(),
+  latitude:z.number().nullable(),
+  longitude:z.number().nullable()
 });
 
 export const PaginatedBookInSchema = z.object({

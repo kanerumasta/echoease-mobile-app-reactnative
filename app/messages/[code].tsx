@@ -28,8 +28,11 @@ export default function ConversationPage() {
 
     })
 
-
-    const websocketURL = `ws://192.168.1.242:8000/ws/chat/${code}`;//CHANGE
+    const socketUrl = process.env.CHAT_SOCKET
+    if(!socketUrl){
+        throw new Error('Missing CHAT_SOCKET environment variable')
+    }
+    const websocketURL = `${socketUrl}/${code}`;
     const {newMessage, setNewMessage, sendMessage } = useChatWebSocket(
       code,
       websocketURL,

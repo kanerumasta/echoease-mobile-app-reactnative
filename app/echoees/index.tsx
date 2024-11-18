@@ -47,6 +47,7 @@ export default function EchoeesPage(){
 
         </View>
 
+        <EchoeeGroup refresh={refresh} category="top" title="Top Echoees"/>
         <EchoeeGroup refresh={refresh} category="near" title="Echoees Near You"/>
         <EchoeeGroup refresh={refresh} category="new" title="Fresh Voices"/>
         <EchoeeGroup refresh={refresh} category="versatile" title="Versatile Performers"/>

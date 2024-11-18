@@ -6,16 +6,14 @@ import { Ionicons } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
 
 
-const Pending = () => {
+export const Pending = () => {
     const {data:bookings=[],isLoading, refetch} = useFetchPendingBookingsQuery()
     const handleRefresh = () => {
         refetch()
     }
 
     return (
-        <LinearGradient
-        colors={['#4aacfb','#00effd']}
-
+        <View
     >
             <FlatList  contentContainerStyle={{minHeight:Dimensions.get('window').height - 100, paddingBottom:30}} style={{paddingTop:20}} data={bookings} renderItem={(item)=>(
                 <BookingCard booking={item.item}/>
@@ -33,11 +31,11 @@ const Pending = () => {
                 showsVerticalScrollIndicator={false}
             />
 
-        </LinearGradient>
+        </View>
     )
 }
 
-export default Pending
+
 
 const styles = StyleSheet.create({
     empty:{

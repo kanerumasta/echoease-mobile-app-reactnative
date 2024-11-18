@@ -1,7 +1,7 @@
 import { Ionicons, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, Dimensions, Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Dimensions, Image, Linking, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 
 import { useGetUserQuery, useLoginMutation } from '@/redux/features/authApiSlice'
 
@@ -149,7 +149,10 @@ const LoginScreen = () => {
         </TouchableOpacity>
         <View style={styles.signupWrapper}>
           <Text style={styles.accountTxt}>Don't have an account?</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>{
+                            Linking.openURL(`http://192.168.206.223:3000/auth/register`)
+                        .catch((err) => console.error("Failed to open URL:", err));
+                        }}>
             <Text style={styles.signupTxt}>Sign up</Text>
           </TouchableOpacity>
 

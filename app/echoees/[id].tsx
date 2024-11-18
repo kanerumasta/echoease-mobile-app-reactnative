@@ -1,17 +1,22 @@
-import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { useFetchDetailArtistByIdQuery, useFetchPortfolioQuery } from "../../redux/features/artistApiSlice";
-import { ActivityIndicator, Dimensions, Image, ImageBackground, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useFetchChatBySlugQuery } from "../../redux/features/chatApiSlice";
 import { skipToken } from "@reduxjs/toolkit/query";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { Link, useLocalSearchParams, useRouter } from "expo-router";
+import { ActivityIndicator, Dimensions, Image, ImageBackground, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useFetchDetailArtistByIdQuery, useFetchDetailCurrentArtistQuery, useFetchPortfolioQuery, useFetchSentConnectionRequestsQuery } from "../../redux/features/artistApiSlice";
+import { useFetchChatBySlugQuery } from "../../redux/features/chatApiSlice";
+import { Connect } from "@/components/echoees/connect";
+import { useGetUserQuery } from "@/redux/features/authApiSlice";
+import { Feedbacks } from "@/components/echoees/feedbacks";
 
 export default function EchoeeDetailPage(){
     const {id} = useLocalSearchParams<{id:string}>()
     const router = useRouter()
-    const {data:artist} = useFetchDetailArtistByIdQuery(id)
+    const {data:artist, refetch} = useFetchDetailArtistByIdQuery(id,{refetchOnMountOrArgChange:true})
+    const {data:currentUser} = useGetUserQuery()
     const {data:chat} = useFetchChatBySlugQuery(artist?.slug ? artist.slug : skipToken)
     const {data:portfolio, isLoading:portfolioLoading} = useFetchPortfolioQuery(id.toString())
+    const {data:sentRequests} = useFetchSentConnectionRequestsQuery()
+    const {data:detailCurrentArtist} = useFetchDetailCurrentArtistQuery()
 
 
     return <View style={styles.mainContainer}>
@@ -53,7 +58,7 @@ export default function EchoeeDetailPage(){
                 >
                     <TouchableOpacity
                         onPress={()=>{
-                            Linking.openURL(`http://192.168.1.242:3000/${artist.slug}?open=1`)
+                            Linking.openURL(`${process.env.BACKEND_URL}/${artist.slug}?open=1`)
                         .catch((err) => console.error("Failed to open URL:", err));
                         }}
                         style={{
@@ -72,7 +77,7 @@ export default function EchoeeDetailPage(){
                                 fontSize:14
                             }}>Paminawa Ko</Text>
                     </TouchableOpacity>
-
+                            <View style={{flexDirection:'row', alignItems:'center', gap:4}}>
                     <TouchableOpacity
                         onPress={()=>{
                            chat && router.push(`/messages/${chat.code}`)
@@ -85,27 +90,25 @@ export default function EchoeeDetailPage(){
                     >
                         <View
                             style={{
-                                backgroundColor:"dodgerblue",
-                                padding:10,
+                                backgroundColor:"#9353d3",
+                                padding:6,
                                 borderRadius:30,
 
                             }}
                         >
-                        <Ionicons size={25} color={"#fff"} name="chatbubble"/>
+                        <Ionicons size={20} color={"#fff"} name="chatbubble"/>
 
                         </View>
-                        <Text>
-                            <Text
-                                style={{
-                                    color:"dodgerblue",
-                                    fontWeight:'bold',
-                                    fontSize:14,
 
-                                }}
-                            >Message</Text>
-                        </Text>
                     </TouchableOpacity>
-
+                    {currentUser &&
+                    detailCurrentArtist &&
+                    (detailCurrentArtist.id !== artist.id) &&
+                    !sentRequests?.some(req=>req.receiver.id === artist.id)&&
+                    !artist.connections.includes(currentUser.id) &&
+                    !detailCurrentArtist.connections.includes(artist.id) &&
+                    <Connect onConnect={refetch} echoeeId={artist.id}/>}
+                    </View>
 
                 </View>
                 {/* PORTFOLIO */}
@@ -132,13 +135,14 @@ export default function EchoeeDetailPage(){
                                     {media.media_type === 'image' && <Image style={{
                                         width:100,
                                         height:100
-                                    }} source={{uri:`http://192.168.1.242:8000${media.file}`}}/>}
+                                    }} source={{uri:`${process.env.BACKEND_URL}${media.file}`}}/>}
                                 </View>
                             ))}
                           </View>
                         ))}
                     </View>
                 </View>
+                <Link href={`/feedbacks/${artist.id}`}>See Reviews</Link>
 
                 </View>
 

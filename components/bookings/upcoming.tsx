@@ -4,7 +4,7 @@ import { useFetchUpcomingEventsQuery } from '@/redux/features/bookingApiSlice'
 import BookingCard from '@/components/bookings/BookingCard'
 import { LinearGradient } from 'expo-linear-gradient'
 
-const UpcomingBookings = () => {
+export const UpcomingBookings = () => {
     const {data:bookings=[], isLoading, refetch} = useFetchUpcomingEventsQuery()
 
     const handleRefresh = () => {
@@ -13,9 +13,7 @@ const UpcomingBookings = () => {
 
     if(isLoading) return <Loading />
     return (
-        <LinearGradient
-        colors={['#4aacfb','#00effd']}
-
+        <View
 
     >
             <FlatList contentContainerStyle={{minHeight:Dimensions.get('window').height - 100, paddingBottom:30 }} style={{paddingTop:20}} data={bookings} renderItem={(item)=>(
@@ -35,7 +33,7 @@ const UpcomingBookings = () => {
 showsVerticalScrollIndicator={false}
             />
 
-        </LinearGradient>
+        </View>
     )
 }
 
@@ -46,8 +44,6 @@ const Loading = () => {
         </View>
     )
 }
-
-export default UpcomingBookings
 
 
 const styles = StyleSheet.create({

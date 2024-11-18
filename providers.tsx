@@ -1,6 +1,7 @@
 // WebSocketProvider.tsx
 import React, { createContext, useContext, useEffect, useRef, ReactNode, useCallback } from 'react';
 import Toast from 'react-native-toast-message';
+import { useFetchNewNotificationsQuery } from './redux/features/notificationApiSlice';
 
 interface WebSocketContextType {
   socket: WebSocket | null;
@@ -16,15 +17,20 @@ interface WebSocketProviderProps {
 
 export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }) => {
   const socketRef = useRef<WebSocket | null>(null);
+  const {refetch} = useFetchNewNotificationsQuery()
 
   const connect = useCallback(() => {
     if (socketRef.current) return;
-    const socketUrl = process.env.NOTIFICATION_SOCKET || 'ws://localhost:8000/ws/notification'
+    const socketUrl = process.env.NOTIFICATION_SOCKET
+    if(!socketUrl   ){console.log('socketUrl is undefined: /providers');return}
     const socket = new WebSocket(socketUrl);
 
     socket.onopen = () => console.log('WebSocket connection opened');
     socket.onmessage = (event) => {
+
+        refetch()
         const data = JSON.parse(event.data)
+        console.log(data)
         if(event.data.notification_type !== 'message'){
         Toast.show({
             text1: data.message,

@@ -49,7 +49,6 @@ const authApiSlice = apiSlice.injectEndpoints({
             query: () => ({
               url: "/deactivate/",
               method: "POST",
-
             }),
             invalidatesTags:['CurrentUser']
           }),

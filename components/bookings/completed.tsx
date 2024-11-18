@@ -6,7 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 
 
 
-const completed = () => {
+export default function Completed () {
     const {data:bookings=[], isLoading, refetch} = useFetchCompletedBookingsQuery()
 
     const handleRefresh = () => {
@@ -14,9 +14,10 @@ const completed = () => {
     }
 
   return (
-    <LinearGradient
-    colors={['#4aacfb','#00effd']}
-
+    <View
+    style={{
+        paddingTop:20
+    }}
 >
         <FlatList  contentContainerStyle={{minHeight:Dimensions.get('window').height - 100, paddingBottom:30 }} data={bookings} renderItem={({item})=>(
             <BookingCard booking={item}/>
@@ -34,11 +35,11 @@ const completed = () => {
         showsVerticalScrollIndicator={false}
         />
 
-    </LinearGradient>
+    </View>
   )
 }
 
-export default completed
+
 
 const styles = StyleSheet.create({
     empty:{

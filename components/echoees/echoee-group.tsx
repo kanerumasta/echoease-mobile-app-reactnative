@@ -68,7 +68,7 @@ export const EchoeeGroup = ({ title, category, refresh }: EchoeeGroupProps) => {
             <FlatList
                 horizontal
                 data={combinedEchoees}
-                renderItem={({ item }) => <EchoeeCard key={item.id} echoee={item} />}
+                renderItem={({ item, index }) => <EchoeeCard key={item.id} echoee={item} />}
                 keyExtractor={(item) => item.id.toString()}
                 onEndReached={loadMore}
                 onEndReachedThreshold={2}

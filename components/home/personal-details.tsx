@@ -183,6 +183,8 @@ const styles = StyleSheet.create({
     },
     valueText: {
         textTransform: 'capitalize',
+        maxWidth:Dimensions.get('window').width * 0.5,
+        textAlign:'left'
     },
     phoneInputContainer: {
         flexDirection: 'row',

@@ -9,8 +9,6 @@ import { Provider } from 'react-redux';
 import { WebSocketProvider } from '@/providers';
 import Toast from 'react-native-toast-message';
 import { Ionicons } from '@expo/vector-icons';
-import { Image, View } from 'react-native';
-import { useFetchNewNotificationsQuery } from '@/redux/features/notificationApiSlice';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -46,9 +44,13 @@ export default function RootLayout() {
                     headerShown:false
                 }} />
 
-
                 <Stack.Screen name='echoees/index' options={{headerShown:false}}/>
+                <Stack.Screen name='bookings/index' options={{
+                    title:'Bookings',
+                }}/>
+
                 <Stack.Screen name='login' options={{headerShown:false}}/>
+                <Stack.Screen name='connection-requests' options={{headerTitleAlign:'center',title:'Connection Requests', headerTintColor:'white'}}/>
                 <Stack.Screen name='activate' options={{headerShown:false}}/>
                 <Stack.Screen name='profile' options={{
                     title:'Profile',
@@ -58,10 +60,10 @@ export default function RootLayout() {
                 <Stack.Screen name='change-password' options={{headerShown:false}}/>
                 <Stack.Screen name='forgot-password' options={{headerShown:false}}/>
                 <Stack.Screen name='echoees/book' options={{presentation:'formSheet'}}/>
-                <Stack.Screen name='(booking_tabs)' options={{headerShown:false}}/>
                 <Stack.Screen name='messages/index' options={{headerShown:false}}/>
                 <Stack.Screen name='messages/[code]' options={{headerShown:false}}/>
                 <Stack.Screen name='transactions/[id]' options={{headerShown:false}}/>
+                <Stack.Screen name='echoees/[id]' options={{headerShown:false}}/>
                 <Stack.Screen  name='transactions/index' options={{
                     title:'Transactions',
                     headerTitleAlign:'center',

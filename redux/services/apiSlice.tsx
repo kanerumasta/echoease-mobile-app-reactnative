@@ -4,8 +4,10 @@ import { Mutex } from "async-mutex";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const mutex = new Mutex();
+console.log('env',`${process.env.BACKEND_URL}` )
+console.log(typeof(`${process.env.BACKEND_URL}`))
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'http://192.168.1.242:8000/api',
+  baseUrl:`${process.env.BACKEND_URL}/api`,
   prepareHeaders: async (headers) => {
     const accessToken = await AsyncStorage.getItem('access');
     if (accessToken) {

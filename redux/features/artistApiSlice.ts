@@ -201,7 +201,13 @@ const artistApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["SentConnectionRequests", "RecommendedArtists"],
     }),
-
+    disconnectArtist:builder.mutation<any,string>({
+        query:(id)=>({
+            url: `/artists/connections/${id}/disconnect`,
+            method: "DELETE",
+          }),
+          invalidatesTags: ["Connections"]
+        }),
     fetchRecommendedArtistConnections: builder.query<
       z.infer<typeof RecommendedArtistsConnectionsSchema>[],
       void
@@ -289,6 +295,7 @@ export const {
   useFetchFollowersQuery,
   useFetchArtistsWithFilterQuery,
 
+
   useCreateArtistApplicationMutation,
   useFollowArtistMutation,
   useUnfollowArtistMutation,
@@ -307,4 +314,5 @@ export const {
   useDeleteGenreMutation,
   useAddGenreMutation,
   useUpdateArtistMutation,
+  useDisconnectArtistMutation
 } = artistApiSlice;

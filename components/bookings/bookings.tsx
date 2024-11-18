@@ -21,7 +21,9 @@ const Bookings = () => {
     })
     // { page: number; sort_by: string | null; sort_order: string | null; status: string | null; paginate: boolean; q: string | null; }
 
-    const {data:bookingsData, refetch, isLoading} = useFetchMyBookingsQuery(filters)
+    const {data:bookingsData, refetch, isLoading} = useFetchMyBookingsQuery(filters,{
+        refetchOnMountOrArgChange: true
+    })
 
     const handleRefresh = () => {
         setPage(1)
@@ -29,14 +31,29 @@ const Bookings = () => {
         refetch()
     }
 
+    const handleNext = () => {
+
+        if(bookingsData?.has_next &&!isLoading){
+
+            setPage(prev => prev+1)
+            refetch()
+        }
+    }
+    const handleBack = () => {
+        if(bookingsData?.has_next &&!isLoading){
+            setPage(prev => prev-1)
+        }
+    }
+
 
   return (
-<LinearGradient
-    colors={['#4aacfb','#00effd']}
-
+<View
 >
     {bookingsData &&
-    <FlatList  contentContainerStyle={{minHeight:Dimensions.get('window').height - 100, paddingBottom:30 }} style={styles.flatList} data={bookingsData.results} renderItem={({item})=>(
+    <FlatList  contentContainerStyle={{minHeight:Dimensions.get('window').height - 100, paddingBottom:30 }}
+    style={styles.flatList}
+    data={bookingsData.results}
+    renderItem={({item})=>(
         <>
         <BookingCard booking={item}/>
 
@@ -45,10 +62,12 @@ const Bookings = () => {
     refreshControl={
         <RefreshControl refreshing={isLoading} onRefresh={handleRefresh} />
     }
+    onEndReached={handleNext}
+    onStartReached={handleBack}
     showsVerticalScrollIndicator={false}
     />
 }
-</LinearGradient>
+</View>
 
   )
 }

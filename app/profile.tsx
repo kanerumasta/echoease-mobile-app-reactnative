@@ -3,13 +3,15 @@ import { useGetUserQuery } from '@/redux/features/authApiSlice';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../components/home/header';
 import PersonalDetails from '../components/home/personal-details';
+import { Connections } from '@/components/echoees/connection-lists';
 
 const Profile = () => {
     const router = useRouter()
+
   const {data: current_user, isLoading} = useGetUserQuery();
   const handlePress = () => {
      router.back()
@@ -25,15 +27,16 @@ const Profile = () => {
   return (
     <View style={styles.container}>
 
-      <View style={styles.container}>
-      <ImageBackground source={require('../assets/images/homeBG.jpg')} style={styles.bg}>
-{current_user && <>
-      <Header user={current_user}/>
-    <PersonalDetails user={current_user}/>
-</>}
+      <ScrollView style={styles.container}>
 
-      </ImageBackground>
-      </View>
+        {current_user && <>
+            <Header user={current_user}/>
+            <PersonalDetails user={current_user}/>
+        </>}
+
+      {current_user && current_user.role === 'artist' &&  <Connections />}
+
+      </ScrollView>
     </View>
 
 
@@ -45,6 +48,7 @@ export default Profile
 const styles = StyleSheet.create({
   container:{
     flex: 1,
+
   },
   heading:{
     flexDirection: 'row',

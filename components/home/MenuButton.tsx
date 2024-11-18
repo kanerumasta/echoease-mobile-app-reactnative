@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     textShadowRadius: 1,
     alignSelf: 'center',
     textAlign: 'center',
+    
     color: 'white',
     paddingVertical: 4,
     fontSize: 20,
