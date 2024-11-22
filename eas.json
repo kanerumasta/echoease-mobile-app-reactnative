@@ -1,0 +1,27 @@
+{
+    "build": {
+        "android": {
+            "env": {},
+            "hooks": {
+                "pre-build": "eas-prebuild.bat"
+            }
+        },
+        "preview": {
+            "android": {
+                "buildType": "apk",
+                "hooks": {
+                    "pre-build": "eas-prebuild.bat"
+                }
+            }
+        },
+        "preview2": {
+            "android": {
+                "gradleCommand": ":app:assembleRelease"
+            }
+        },
+        "preview3": {
+            "developmentClient": true
+        },
+        "production": {}
+    }
+}
