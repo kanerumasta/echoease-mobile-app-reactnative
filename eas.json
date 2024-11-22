@@ -1,17 +1,11 @@
 {
     "build": {
         "android": {
-            "env": {},
-            "hooks": {
-                "pre-build": "eas-prebuild.bat"
-            }
+            "env": {}
         },
         "preview": {
             "android": {
-                "buildType": "apk",
-                "hooks": {
-                    "pre-build": "eas-prebuild.bat"
-                }
+                "buildType": "apk"
             }
         },
         "preview2": {
