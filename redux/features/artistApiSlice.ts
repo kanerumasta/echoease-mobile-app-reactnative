@@ -275,6 +275,9 @@ const artistApiSlice = apiSlice.injectEndpoints({
         return `/artists?${params.toString()}`;
       },
     }),
+    fetchFollowing:builder.query<z.infer<typeof ArtistInSchema>[], number>({
+        query:(id)=>`/artists/${id}/following`
+    })
   }),
 });
 
@@ -294,6 +297,7 @@ export const {
   useFetchDetailArtistByIdQuery,
   useFetchFollowersQuery,
   useFetchArtistsWithFilterQuery,
+  useFetchFollowingQuery,
 
 
   useCreateArtistApplicationMutation,

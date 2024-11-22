@@ -5,20 +5,21 @@ import { useFetchArtistsWithFilterQuery } from "@/redux/features/artistApiSlice"
 import { useState } from "react";
 import { useRouter } from "expo-router";
 import { useGetUserQuery } from "@/redux/features/authApiSlice";
+import Search from "@/components/echoees/Search";
 
 export default function EchoeesPage(){
     const [refresh, setRefresh] = useState(1)
 
-    const [searchText, setSearchText] = useState()
+    const [searchText, setSearchText] = useState("")
+
     const handleRefresh = () => {
         setRefresh(prev=>prev+1)
     }
     return<>
+
 <View style={{backgroundColor:'rgba(0,0,0,0.8)', height:50}}>
 
 </View>
-
-
     <ScrollView style={styles.mainContainer} refreshControl={ <RefreshControl refreshing={false} onRefresh={handleRefresh} />}>
         <View style={{
             paddingHorizontal:10,
@@ -26,6 +27,7 @@ export default function EchoeesPage(){
 
         }}>
              <Header />
+
 
             <View
                 style={{
@@ -39,18 +41,21 @@ export default function EchoeesPage(){
                 }}
             >
                 <Ionicons size={20} color={'rgba(0,0,0,0.4)'} name="search"/>
-                <TextInput placeholderTextColor={'rgba(0,0,0,0.4)'} style={{
+                <TextInput onChangeText={setSearchText} placeholderTextColor={'rgba(0,0,0,0.4)'} style={{
                     flex:1,
                     marginRight:15,
                 }} placeholder="Search Echoee"/>
             </View>
 
         </View>
-
+        {searchText ? <Search searchText={searchText}/> :
+        <>
         <EchoeeGroup refresh={refresh} category="top" title="Top Echoees"/>
         <EchoeeGroup refresh={refresh} category="near" title="Echoees Near You"/>
         <EchoeeGroup refresh={refresh} category="new" title="Fresh Voices"/>
         <EchoeeGroup refresh={refresh} category="versatile" title="Versatile Performers"/>
+        </>
+        }
     </ScrollView>
 
     </>

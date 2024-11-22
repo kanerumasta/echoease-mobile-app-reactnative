@@ -10,7 +10,9 @@ import Dialog from 'react-native-dialog'
 import { TextInput } from "react-native-paper";
 export default function BookingDetail(){
     const {id} = useLocalSearchParams<{id:string}>()
-    const {data:booking,isLoading} = useFetchBookingDetailQuery(id)
+    const {data:booking,isLoading} = useFetchBookingDetailQuery(id,{
+        refetchOnMountOrArgChange:true
+    })
     const {data:currentUser} = useGetUserQuery()
     const [createInvoice,{isLoading:invoiceLoading}] = useCreateInvoiceMutation()
     const [cancellationReason, setCancellationReason] = useState("")
@@ -64,7 +66,7 @@ export default function BookingDetail(){
         <View style={styles.modalContainer}>
              {/* Image */}
              <View style={{position:'relative'}}>
-                {currentUser.role === 'artist'?
+                {currentUser.role === 'client'?
                  <Image style={{width:Dimensions.get('window').width, height:Dimensions.get('window').height * 0.35}} source={{uri:`${booking.artist.user.profile.profile_image}`}}/>
                  :
                  <Image style={{width:Dimensions.get('window').width, height:Dimensions.get('window').height * 0.35}} source={{uri:`${booking.client.profile.profile_image}`}}/>
@@ -73,7 +75,7 @@ export default function BookingDetail(){
              </View>
              <View style={{padding:15}}>
                  <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
-                     <Text style={{fontSize:24, fontWeight:'bold', marginBottom:10}}>{currentUser.role  === 'artist' ? booking.artist.user.fullname : booking.client.fullname}</Text>
+                     <Text style={{fontSize:24, fontWeight:'bold', marginBottom:10}}>{currentUser.role  === 'client' ? booking.artist.user.fullname : booking.client.fullname}</Text>
                      <Text style={{padding:8, textTransform:'capitalize',
                          backgroundColor:statusBackColor,
                          fontSize:12,
@@ -85,7 +87,7 @@ export default function BookingDetail(){
                  <View style={{flexDirection:'row', gap:6, paddingVertical:6}}>
                      <Ionicons name="headset-sharp" size={24} color={"dodgerblue"} style={{opacity:0.7}}/>
                      <View>
-                         <Text style={{fontSize:14, color:'rgba(0,0,0,0.8)',fontWeight:'bold', textTransform:'capitalize'}}>{booking.id}</Text>
+                         <Text style={{fontSize:14, color:'rgba(0,0,0,0.8)',fontWeight:'bold', textTransform:'capitalize'}}>{booking.event_name}</Text>
                      </View>
                  </View>
                  <View style={{flexDirection:'row', gap:6, paddingVertical:6}}>

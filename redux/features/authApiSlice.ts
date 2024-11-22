@@ -52,9 +52,16 @@ const authApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags:['CurrentUser']
           }),
+
+          refreshToken :builder.mutation<any, void>({
+            query: () => ({
+                url: '/jwt/create/',
+                method: 'POST',
+            })
+          })
     })
 })
 
-export const {useDeactivateUserMutation,useActivateUserMutation,useResetPasswordMutation,useLogoutUserMutation,useLoginMutation, useGetUserQuery, useUploadImageMutation} = authApiSlice;
+export const {useDeactivateUserMutation,useActivateUserMutation,useResetPasswordMutation,useLogoutUserMutation,useLoginMutation, useGetUserQuery, useUploadImageMutation, useRefreshTokenMutation} = authApiSlice;
 
 export default authApiSlice;

@@ -45,6 +45,7 @@ export default function RootLayout() {
                 }} />
 
                 <Stack.Screen name='echoees/index' options={{headerShown:false}}/>
+                <Stack.Screen name='followers/[artistId]' options={{title:'', headerTintColor:'white'}}/>
                 <Stack.Screen name='bookings/index' options={{
                     title:'Bookings',
                 }}/>
@@ -58,12 +59,17 @@ export default function RootLayout() {
                     headerTintColor:'#fff'
                 }}/>
                 <Stack.Screen name='change-password' options={{headerShown:false}}/>
+                <Stack.Screen name='feedbacks/[id]' options={{title:'Feedbacks'}}/>
                 <Stack.Screen name='forgot-password' options={{headerShown:false}}/>
                 <Stack.Screen name='echoees/book' options={{presentation:'formSheet'}}/>
                 <Stack.Screen name='messages/index' options={{headerShown:false}}/>
                 <Stack.Screen name='messages/[code]' options={{headerShown:false}}/>
                 <Stack.Screen name='transactions/[id]' options={{headerShown:false}}/>
                 <Stack.Screen name='echoees/[id]' options={{headerShown:false}}/>
+                <Stack.Screen name='bookings/[id]' options={{title:'Booking Details',
+                    headerTitleAlign:'center',
+                    headerTintColor:'#fff'
+                }}/>
                 <Stack.Screen  name='transactions/index' options={{
                     title:'Transactions',
                     headerTitleAlign:'center',

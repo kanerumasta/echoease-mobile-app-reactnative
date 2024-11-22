@@ -49,7 +49,6 @@ const EchoeaseCarousel: React.FC = () => {
     return () => clearInterval(interval); // Cleanup on unmount
   }, [data.length]);
 
-  // Handle scrolling
   const onScrollEnd = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const newIndex = Math.round(event.nativeEvent.contentOffset.x / width);
     setCurrentIndex(newIndex);

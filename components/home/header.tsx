@@ -3,7 +3,7 @@ import { UserSchema } from "@/schemas/user-schemas"
 import { Dimensions, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { Ionicons } from "@expo/vector-icons"
 import { useState } from "react"
-import EditProfile from "./edit-profile"
+
 import ChangePassword from "./change-password"
 import { Logout } from "./logout"
 import Deactivate from "./deactivate"
@@ -21,7 +21,7 @@ return <View style={styles.mainContainer}>
     <Modal transparent visible={modalVisible}>
         <View style={styles.modalContainer}>
         <View style={styles.modalView}>
-            <EditProfile user={user}/>
+
             <ChangePassword />
             <Deactivate user={user}/>
             <Logout />

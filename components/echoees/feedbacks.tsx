@@ -46,7 +46,7 @@ export const Feedbacks = ({artistId}:{artistId:number}) => {
 const FeedbackCard = ({feedbackItem}:{feedbackItem:z.infer<typeof FeedbacksInSchema>}) =>{
     return <View style={styles.cardContainer}>
         <View style={styles.topContainer}>
-            <Image style={styles.cardImage} source={{uri:`${process.env.BACKEND_URL}${feedbackItem.client.profile.profile_image}`}}/>
+            <Image style={styles.cardImage} source={{uri:`${process.env.EXPO_PUBLIC_BACKEND_URL}${feedbackItem.client.profile.profile_image}`}}/>
             <View>
             <Text style={styles.fullname}>{feedbackItem.client.fullname}</Text>
             <Stars rating={feedbackItem.rating}/>

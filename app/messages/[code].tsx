@@ -28,7 +28,8 @@ export default function ConversationPage() {
 
     })
 
-    const socketUrl = process.env.CHAT_SOCKET
+    const socketUrl = process.env.EXPO_PUBLIC_CHAT_SOCKET
+    console.log('socketUrl', socketUrl)
     if(!socketUrl){
         throw new Error('Missing CHAT_SOCKET environment variable')
     }

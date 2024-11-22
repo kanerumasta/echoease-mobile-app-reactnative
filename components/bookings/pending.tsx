@@ -11,6 +11,7 @@ export const Pending = () => {
     const handleRefresh = () => {
         refetch()
     }
+    console.log(bookings.length)
 
     return (
         <View

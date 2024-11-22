@@ -6,37 +6,39 @@ import * as React from 'react';
 import { View, useWindowDimensions } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 
+import { Following } from '@/components/echoees/following';
+import { useLocalSearchParams } from 'expo-router';
+import { Followers } from '@/components/echoees/followers';
+
+
 type Route ={
-    key:"pending"|"upcoming"|"completed"|"all",
-    title:string
+    key:"followers"|"following",
+    title:string,
+    artistId:string
 }
 const renderScene = ({ route }:{route:Route}) => {
     switch (route.key) {
-      case 'pending':
-        return <Pending/>;
-      case 'upcoming':
-        return <UpcomingBookings />;
-      case 'completed':
-        return <Completed />;
-      case 'all':
-        return <Bookings />;
+      case 'following':
+        return <Followers artistId={route.artistId}/>;
+      case 'followers':
+        return <Following artistId={route.artistId} />;
       default:
         return null;
     }
   };
 
-const routes:Route[] = [
-  { key: 'pending', title: 'Pending' },
-  { key: 'upcoming', title: 'Upcoming' },
-  { key: 'completed', title: 'Completed' },
-  { key: 'all', title: 'All' },
 
-];
 
-export default function BookingTabs() {
+export default function FollowersTabs() {
+    const {artistId} = useLocalSearchParams<{artistId:string}>()
   const layout = useWindowDimensions();
   const [index, setIndex] = React.useState(0);
 
+  const routes:Route[] = [
+    { key: 'followers', title: 'Following' , artistId:artistId},
+    { key: 'following', title: 'Followers', artistId:artistId },
+
+  ];
   return (
     <TabView
       navigationState={{ index, routes }}
@@ -54,16 +56,15 @@ export default function BookingTabs() {
             }
           }
 
-          activeColor='dodgerblue' // Active tab text color
-          inactiveColor='black' // Inactive tab text color
+          activeColor='dodgerblue'
+          inactiveColor='black'
 
           labelStyle={{
           }}
           indicatorStyle={{
-            backgroundColor: 'dodgerblue', // Active tab indicator color (underline)
+            backgroundColor: 'dodgerblue',
             height: 4,
-            borderRadius: 2, // Adjust the thickness of the underline
-            // Adjust the thickness of the underline
+            borderRadius: 2,
           }}
         />
       )}

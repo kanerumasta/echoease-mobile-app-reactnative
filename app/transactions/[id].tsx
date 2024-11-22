@@ -45,7 +45,7 @@ export default function TransactionDetail() {
               <Image
                 style={styles.image}
                 source={{
-                  uri: `${process.env.BACKEND_URL}${transaction.booking.client.profile.profile_image}`,
+                  uri: `${process.env.EXPO_PUBLIC_BACKEND_URL}${transaction.booking.client.profile.profile_image}`,
                 }}
               />
             </View>
@@ -54,7 +54,7 @@ export default function TransactionDetail() {
               <Image
                 style={styles.image}
                 source={{
-                  uri: `${process.env.BACKEND_URL}${transaction.booking.artist.user.profile.profile_image}`,
+                  uri: `${process.env.EXPO_PUBLIC_BACKEND_URL}${transaction.booking.artist.user.profile.profile_image}`,
                 }}
               />
             </View>

@@ -21,7 +21,8 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
 
   const connect = useCallback(() => {
     if (socketRef.current) return;
-    const socketUrl = process.env.NOTIFICATION_SOCKET
+    const socketUrl = process.env.EXPO_PUBLIC_NOTIFICATION_SOCKET
+    console.log('NOtification URl', socketUrl)
     if(!socketUrl   ){console.log('socketUrl is undefined: /providers');return}
     const socket = new WebSocket(socketUrl);
 

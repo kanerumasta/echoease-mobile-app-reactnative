@@ -19,7 +19,7 @@ const BookingCard = ({booking}:{booking:z.infer<typeof BookInSchema>}) => {
   return (
     <TouchableOpacity onPress={()=>router.push(`/bookings/${booking.id.toString()}`)} style={styles.mainContainer}>
         {currentUser && currentUser.role === 'artist' ?
-        <Image style={styles.image} source={{uri:`${process.env.BACKEND_URL}${booking.client.profile.profile_image}`}}/> : <Image style={styles.image} source={{uri:`${process.env.BACKEND_URL}${booking.artist.user.profile.profile_image}`}}/>}
+        <Image style={styles.image} source={{uri:`${process.env.EXPO_PUBLIC_BACKEND_URL}${booking.client.profile.profile_image}`}}/> : <Image style={styles.image} source={{uri:`${process.env.EXPO_PUBLIC_BACKEND_URL}${booking.artist.user.profile.profile_image}`}}/>}
         <View style={{
             flex:1
         }}>

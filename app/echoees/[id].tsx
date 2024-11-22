@@ -1,12 +1,14 @@
+import { Connect } from "@/components/echoees/connect";
+import { Follow } from "@/components/echoees/follow";
+import FollowersDisplayCard from "@/components/echoees/followersDisplayCard";
+import VideoThumbnail from "@/components/echoees/VideoThumbnail";
+import { useGetUserQuery } from "@/redux/features/authApiSlice";
 import { Ionicons } from "@expo/vector-icons";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { Link, useLocalSearchParams, useRouter } from "expo-router";
 import { ActivityIndicator, Dimensions, Image, ImageBackground, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useFetchDetailArtistByIdQuery, useFetchDetailCurrentArtistQuery, useFetchPortfolioQuery, useFetchSentConnectionRequestsQuery } from "../../redux/features/artistApiSlice";
 import { useFetchChatBySlugQuery } from "../../redux/features/chatApiSlice";
-import { Connect } from "@/components/echoees/connect";
-import { useGetUserQuery } from "@/redux/features/authApiSlice";
-import { Feedbacks } from "@/components/echoees/feedbacks";
 
 export default function EchoeeDetailPage(){
     const {id} = useLocalSearchParams<{id:string}>()
@@ -26,7 +28,13 @@ export default function EchoeeDetailPage(){
                     <View style={{position:'absolute',zIndex:10, top:20, left:10}}>
                         <Text style={{color:"#fff"}}>Echoease</Text>
                     </View>
-                    <ImageBackground style={styles.image} source={{uri:artist.user?.profile?.profile_image}}/>
+                    <View style={{
+                        position:'relative'
+                    }}>
+                    <ImageBackground style={styles.image} source={{uri:artist.user?.profile?.profile_image}}>
+
+                    </ImageBackground>
+                    </View>
                     <ScrollView>
                 <View style={{
                     position:'relative',
@@ -36,10 +44,41 @@ export default function EchoeeDetailPage(){
                     }}>
 
                 </View>
-                <View style={styles.detailsContainer}>
 
-                <Text style={styles.name}>{artist?.user.fullname}</Text>
-                <Text style={{fontSize:30, fontWeight:'bold', marginBottom:15}}>Echoee</Text>
+                <View style={styles.detailsContainer}>
+                <View style={{
+                    flexDirection:'row',
+                    alignItems:'center'
+
+                }}>
+                    <View style={{
+                        flex:1
+                    }}>
+                        <Text style={styles.name}>{artist?.user.fullname}</Text>
+                        <Text style={{fontSize:30, fontWeight:'bold', marginBottom:15}}>Echoee</Text>
+                    </View>
+                    <TouchableOpacity
+                        onPress={()=>{
+                            Linking.openURL(`${process.env.EXPO_PUBLIC_SITE}/${artist.slug}?open=1`)
+                        .catch((err) => console.error("Failed to open URL:", err));
+                        }}
+                        style={{
+                        backgroundColor:'dodgerblue',
+                        padding:15,
+                        borderRadius:10,
+                        width:130,
+                        alignItems:'center'
+                    }}>
+                        <Text
+                            style={{
+                                color:"#fff",
+                                fontWeight:'bold',
+                                fontSize:14
+                            }}>Paminawa Ko</Text>
+                    </TouchableOpacity>
+
+
+                </View>
                 <Text
                     style={{
                         color:'rgba(0,0,0,0.5)',
@@ -56,28 +95,27 @@ export default function EchoeeDetailPage(){
 
                     }}
                 >
-                    <TouchableOpacity
-                        onPress={()=>{
-                            Linking.openURL(`${process.env.BACKEND_URL}/${artist.slug}?open=1`)
-                        .catch((err) => console.error("Failed to open URL:", err));
-                        }}
-                        style={{
-                        backgroundColor:'dodgerblue',
-                        padding:15,
-                        borderRadius:10,
 
-                        width:130,
-                        display:'flex',
+            <View style={{
+                flexDirection:'row',
+                flex:1,
+                alignItems:'center',
+                justifyContent:'space-between',
+                gap:4,
+                marginBottom:20,
+                }}>
+                    <View style={{
+                        flexDirection:'row',
                         alignItems:'center'
                     }}>
-                        <Text
-                            style={{
-                                color:"#fff",
-                                fontWeight:'bold',
-                                fontSize:14
-                            }}>Paminawa Ko</Text>
-                    </TouchableOpacity>
-                            <View style={{flexDirection:'row', alignItems:'center', gap:4}}>
+                        <FollowersDisplayCard artistId={artist.id.toString()}/>
+                   {currentUser && artist.user.id !== currentUser.id && <Follow refetch={refetch} artist={artist}/>}
+                    </View>
+
+<View style={{
+    flexDirection:'row',
+    gap:4
+}}>
                     <TouchableOpacity
                         onPress={()=>{
                            chat && router.push(`/messages/${chat.code}`)
@@ -85,6 +123,7 @@ export default function EchoeeDetailPage(){
                         style={{
                             flexDirection:'row',
                             alignItems:'center',
+
                             gap:4,
                         }}
                     >
@@ -109,8 +148,11 @@ export default function EchoeeDetailPage(){
                     !detailCurrentArtist.connections.includes(artist.id) &&
                     <Connect onConnect={refetch} echoeeId={artist.id}/>}
                     </View>
+                    </View>
 
                 </View>
+
+
                 {/* PORTFOLIO */}
                 <View>
                     <Text
@@ -132,10 +174,12 @@ export default function EchoeeDetailPage(){
                           }} key={item.id}>
                             {item.medias.map((media)=>(
                                 <View key={media.id}>
-                                    {media.media_type === 'image' && <Image style={{
+                                    {media.media_type === 'image' &&
+                                <Image style={{
                                         width:100,
                                         height:100
                                     }} source={{uri:`${process.env.BACKEND_URL}${media.file}`}}/>}
+
                                 </View>
                             ))}
                           </View>
@@ -147,12 +191,14 @@ export default function EchoeeDetailPage(){
                 </View>
 
                 </ScrollView>
+
             </View>
         </>
 }
     </View>
 
 }
+
 
 const styles = StyleSheet.create({
     image:{

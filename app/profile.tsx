@@ -8,11 +8,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../components/home/header';
 import PersonalDetails from '../components/home/personal-details';
 import { Connections } from '@/components/echoees/connection-lists';
+import { useFetchDetailCurrentArtistQuery } from '@/redux/features/artistApiSlice';
 
 const Profile = () => {
     const router = useRouter()
 
   const {data: current_user, isLoading} = useGetUserQuery();
+
   const handlePress = () => {
      router.back()
   }
