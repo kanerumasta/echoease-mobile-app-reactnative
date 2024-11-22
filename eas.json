@@ -1,25 +1,39 @@
 {
+    "cli": {
+        "version": ">= 13.3.0",
+        "appVersionSource": "remote"
+    },
     "build": {
-        "android": {
-            "env": {}
+        "development": {
+            "developmentClient": true,
+            "distribution": "internal",
+            "android": {
+                "image": "latest"
+            },
+            "ios": {
+                "image": "latest"
+            }
         },
         "preview": {
+            "distribution": "internal",
             "android": {
-                "buildType": "apk"
+                "image": "latest"
+            },
+            "ios": {
+                "image": "latest"
             }
-        },
-        "preview2": {
-            "android": {
-                "gradleCommand": ":app:assembleRelease"
-            }
-        },
-        "preview3": {
-            "developmentClient": true
         },
         "production": {
-            "env": {
-                "NODE_ENV": "production"
+            "autoIncrement": true,
+            "android": {
+                "image": "latest"
+            },
+            "ios": {
+                "image": "latest"
             }
         }
+    },
+    "submit": {
+        "production": {}
     }
 }
