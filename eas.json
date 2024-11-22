@@ -16,6 +16,10 @@
         "preview3": {
             "developmentClient": true
         },
-        "production": {}
+        "production": {
+            "env": {
+                "NODE_ENV": "production"
+            }
+        }
     }
 }
