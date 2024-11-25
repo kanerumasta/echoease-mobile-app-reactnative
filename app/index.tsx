@@ -100,7 +100,7 @@ export default function Home(){
                 label="Transactions"
             />
             <MenuButton
-                route="Settings"
+                route="/settings"
                 icon={<Image style={styles.icon}  source={require('../assets/images/settings.png')}/>}
                 label="Settings"
             />

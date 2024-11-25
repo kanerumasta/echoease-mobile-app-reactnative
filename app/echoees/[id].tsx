@@ -9,6 +9,10 @@ import { Link, useLocalSearchParams, useRouter } from "expo-router";
 import { ActivityIndicator, Dimensions, Image, ImageBackground, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useFetchDetailArtistByIdQuery, useFetchDetailCurrentArtistQuery, useFetchPortfolioQuery, useFetchSentConnectionRequestsQuery } from "../../redux/features/artistApiSlice";
 import { useFetchChatBySlugQuery } from "../../redux/features/chatApiSlice";
+import GenreList from "@/components/echoees/GenreList";
+import PackageList from "@/components/echoees/PackageList";
+import { LimitedFeedbacks } from "@/components/echoees/LimitedFeedbacks";
+import LimitedConnections from "@/components/echoees/LimitedConnections";
 
 export default function EchoeeDetailPage(){
     const {id} = useLocalSearchParams<{id:string}>()
@@ -25,9 +29,12 @@ export default function EchoeeDetailPage(){
         {artist &&
         <>
             <View style={{position:'relative'}}>
-                    <View style={{position:'absolute',zIndex:10, top:20, left:10}}>
-                        <Text style={{color:"#fff"}}>Echoease</Text>
-                    </View>
+                    <Ionicons style={{
+                        position:'absolute',
+                        top:40,
+                        left:10,
+                        zIndex:10
+                    }} name="chevron-back" size={25} color={"#fff"} onPress={()=>router.back()}/>
                     <View style={{
                         position:'relative'
                     }}>
@@ -36,6 +43,7 @@ export default function EchoeeDetailPage(){
                     </ImageBackground>
                     </View>
                     <ScrollView>
+
                 <View style={{
                     position:'relative',
                     backgroundColor:'transparent',
@@ -44,6 +52,7 @@ export default function EchoeeDetailPage(){
                     }}>
 
                 </View>
+
 
                 <View style={styles.detailsContainer}>
                 <View style={{
@@ -57,7 +66,9 @@ export default function EchoeeDetailPage(){
                         <Text style={styles.name}>{artist?.user.fullname}</Text>
                         <Text style={{fontSize:30, fontWeight:'bold', marginBottom:15}}>Echoee</Text>
                     </View>
+                    {currentUser && currentUser.role==='client' &&
                     <TouchableOpacity
+                        disabled={!artist.is_available}
                         onPress={()=>{
                             Linking.openURL(`${process.env.EXPO_PUBLIC_SITE}/${artist.slug}?open=1`)
                         .catch((err) => console.error("Failed to open URL:", err));
@@ -74,8 +85,11 @@ export default function EchoeeDetailPage(){
                                 color:"#fff",
                                 fontWeight:'bold',
                                 fontSize:14
-                            }}>Paminawa Ko</Text>
+                            }}>
+                                {artist.is_available ? 'Bring Me Onstage' : 'No Schedules Yet'}
+                            </Text>
                     </TouchableOpacity>
+}
 
 
                 </View>
@@ -98,6 +112,10 @@ export default function EchoeeDetailPage(){
 
             <View style={{
                 flexDirection:'row',
+                backgroundColor:'lightgray',
+                borderRadius:10,
+                elevation:2,
+                padding:10,
                 flex:1,
                 alignItems:'center',
                 justifyContent:'space-between',
@@ -106,16 +124,15 @@ export default function EchoeeDetailPage(){
                 }}>
                     <View style={{
                         flexDirection:'row',
-                        alignItems:'center'
-                    }}>
-                        <FollowersDisplayCard artistId={artist.id.toString()}/>
-                   {currentUser && artist.user.id !== currentUser.id && <Follow refetch={refetch} artist={artist}/>}
-                    </View>
+                        alignItems:'center',
 
-<View style={{
-    flexDirection:'row',
-    gap:4
-}}>
+                        gap:4
+
+                    }}>
+                        <View style={{
+                                    flexDirection:'row',
+                                    gap:4
+                                }}>
                     <TouchableOpacity
                         onPress={()=>{
                            chat && router.push(`/messages/${chat.code}`)
@@ -147,46 +164,56 @@ export default function EchoeeDetailPage(){
                     !artist.connections.includes(currentUser.id) &&
                     !detailCurrentArtist.connections.includes(artist.id) &&
                     <Connect onConnect={refetch} echoeeId={artist.id}/>}
+                     </View>
+                    </View>
+                    <View style={{flexDirection:'row', alignItems:'center'}}>
+                   {currentUser && artist.user.id !== currentUser.id && <Follow refetch={refetch} artist={artist}/>}
+                    <FollowersDisplayCard artistId={artist.id.toString()}/>
                     </View>
                     </View>
 
                 </View>
 
+                <GenreList artist={artist}/>
+                <PackageList artist={artist}/>
+                <View style={{
+                    flexDirection:'row',
+                    justifyContent:'space-between',
+                    alignItems:'center'
 
-                {/* PORTFOLIO */}
-                <View>
-                    <Text
-                        style={{
-                            fontWeight: "bold",
-                    }}>Portfolio</Text>
-                    {portfolioLoading && <ActivityIndicator />}
-                    <View>
-                        {portfolio && portfolio.items.map((item, index) => (
-                          <View style={{
-                            display: "flex",
-                            flexDirection: "row",
+                }}>
+                    <Text style={styles.headerTitle}>Reviews</Text>
+                    <Link style={{
+                        fontWeight:'bold',
+                        fontSize:14,
+                        color:'dodgerblue',
 
+                        marginTop:10,
+                        marginBottom:10,
 
-                            marginBottom: 10,
+                    }} href={`/feedbacks/${artist.id}`}>See All Reviews</Link>
 
-                            backgroundColor:'red',
-                            gap:4
-                          }} key={item.id}>
-                            {item.medias.map((media)=>(
-                                <View key={media.id}>
-                                    {media.media_type === 'image' &&
-                                <Image style={{
-                                        width:100,
-                                        height:100
-                                    }} source={{uri:`${process.env.BACKEND_URL}${media.file}`}}/>}
+                 </View>
+                    <LimitedFeedbacks artistId={artist.id}/>
+                    <View style={{
+                    flexDirection:'row',
+                    justifyContent:'space-between',
+                    alignItems:'center'
 
-                                </View>
-                            ))}
-                          </View>
-                        ))}
-                    </View>
-                </View>
-                <Link href={`/feedbacks/${artist.id}`}>See Reviews</Link>
+                }}>
+                    <Text style={styles.headerTitle}>My Connections</Text>
+                    <Link style={{
+                        fontWeight:'bold',
+                        fontSize:14,
+                        color:'dodgerblue',
+
+                        marginTop:10,
+                        marginBottom:10,
+
+                    }} href={`/followers/${artist.id}`}>See All Connections</Link>
+
+                 </View>
+                 <LimitedConnections artistId={artist.id}/>
 
                 </View>
 
@@ -211,6 +238,12 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
     },
     mainContainer:{
+
+    },
+    headerTitle:{
+        fontSize:18,
+        fontWeight:'bold',
+        color:'rgba(0,0,0,0.4)',
 
     },
     detailsContainer:{

@@ -1,14 +1,17 @@
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { z } from 'zod'
 import { UserSchema } from '@/schemas/user-schemas'
+import { useRouter } from 'expo-router'
 
-const UserCard = ({user, imageSrc}:{user:z.infer<typeof UserSchema>, imageSrc:string}) => {
+const UserCard = ({handleRedirect, user, imageSrc}:{handleRedirect?:()=>void,user:z.infer<typeof UserSchema>, imageSrc:string}) => {
+
+
   return (
-    <View style={styles.container}>
+    <TouchableOpacity onPress={handleRedirect} style={styles.container}>
         <Image style={styles.image} source={{uri:imageSrc}}/>
       <Text style={styles.text}>{user.fullname}</Text>
-    </View>
+    </TouchableOpacity>
   )
 }
 

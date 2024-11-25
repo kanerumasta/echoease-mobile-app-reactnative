@@ -9,19 +9,22 @@ import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { Following } from '@/components/echoees/following';
 import { useLocalSearchParams } from 'expo-router';
 import { Followers } from '@/components/echoees/followers';
+import ConnectionsTab from '@/components/echoees/connectionsTab';
 
 
 type Route ={
-    key:"followers"|"following",
+    key:"followers"|"following"|"connections",
     title:string,
     artistId:string
 }
 const renderScene = ({ route }:{route:Route}) => {
     switch (route.key) {
       case 'following':
-        return <Followers artistId={route.artistId}/>;
+        return <Followers artistId={parseInt(route.artistId)}/>;
       case 'followers':
         return <Following artistId={route.artistId} />;
+    case 'connections':
+        return <ConnectionsTab artistId={route.artistId}/>
       default:
         return null;
     }
@@ -37,6 +40,7 @@ export default function FollowersTabs() {
   const routes:Route[] = [
     { key: 'followers', title: 'Following' , artistId:artistId},
     { key: 'following', title: 'Followers', artistId:artistId },
+    { key: 'connections', title: 'Connections', artistId:artistId },
 
   ];
   return (

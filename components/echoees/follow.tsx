@@ -9,7 +9,6 @@ export const Follow = ({artist, refetch}:{artist:z.infer<typeof ArtistInSchema>,
     const [follow] = useFollowArtistMutation()
     const [unfollow] = useUnfollowArtistMutation()
 
-    console.log(artist)
 
     const handleFollow = async () => {
         const payload = {
@@ -34,7 +33,7 @@ export const Follow = ({artist, refetch}:{artist:z.infer<typeof ArtistInSchema>,
         <TouchableOpacity style={styles.button} onPress={handleFollow}>
             <Text style={styles.text}>Follow</Text>
         </TouchableOpacity> :
-        <TouchableOpacity style={styles.button} onPress={handleUnFollow}>
+        <TouchableOpacity style={[styles.button,{backgroundColor:'rgba(0,0,0,0.4)'}]} onPress={handleUnFollow}>
             <Text  style={styles.text}>Unfollow</Text>
         </TouchableOpacity>
 }
@@ -45,10 +44,13 @@ const styles = StyleSheet.create({
     button:{
         alignItems:'center',
         justifyContent: 'center',
-        padding:10
+        padding:6,
+        backgroundColor:"dodgerblue",
+        borderRadius:20,
+        marginRight:10
     },
     text:{
-        color:'#5152ff',
-        fontSize:18
+        color:'#fff',
+        fontSize:14
     }
 })

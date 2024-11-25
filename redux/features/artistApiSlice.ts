@@ -215,6 +215,12 @@ const artistApiSlice = apiSlice.injectEndpoints({
       query: () => "/artists/get-recommended-artists",
       providesTags: ["RecommendedArtists"],
     }),
+    fetchArtistConnections: builder.query<
+    z.infer<typeof MyConnectionsSchema>,
+   number
+  >({
+    query: (id) => `/artists/artist-connections/${id}`,
+  }),
     acceptConnectionRequest: builder.mutation<any, string>({
       query: (id) => ({
         url: "/artists/connection-requests",
@@ -298,6 +304,7 @@ export const {
   useFetchFollowersQuery,
   useFetchArtistsWithFilterQuery,
   useFetchFollowingQuery,
+  useFetchArtistConnectionsQuery,
 
 
   useCreateArtistApplicationMutation,

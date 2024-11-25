@@ -7,6 +7,8 @@ export const ChatSchema = z.object({
   user: UserSchema,
   partner: UserSchema,
   unread_messages_count: z.number(),
+  last_message:z.string(),
+  last_message_time:z.string()
 });
 
 export const MessageSchema = z.object({

@@ -8,9 +8,11 @@ import { ActivityIndicator, Dimensions, Image, Linking, ScrollView, StyleSheet, 
 import MapView, { Marker } from "react-native-maps";
 import Dialog from 'react-native-dialog'
 import { TextInput } from "react-native-paper";
+import PostReview from "@/components/bookings/PostReview";
+import { Stars } from "@/components/echoees/stars";
 export default function BookingDetail(){
     const {id} = useLocalSearchParams<{id:string}>()
-    const {data:booking,isLoading} = useFetchBookingDetailQuery(id,{
+    const {data:booking,isLoading, refetch} = useFetchBookingDetailQuery(id,{
         refetchOnMountOrArgChange:true
     })
     const {data:currentUser} = useGetUserQuery()
@@ -52,7 +54,6 @@ export default function BookingDetail(){
     const openXendit =  (url:string)=>{
         Linking.openURL(url)
     }
-    console.log(`${booking?.artist.user.profile.profile_image}`)
 
     const statusBackColor = booking?.status === 'pending' ? '#e6c77a' : booking?.status === 'completed' ? '#17c964' : booking?.status === 'rejected' ? '#f31260' : booking?.status === 'approved' ? "#9353d3" : booking?.status === 'awaiting_downpayment'? "#006fee" : "#3f3f46"
 
@@ -113,9 +114,23 @@ export default function BookingDetail(){
               </TouchableOpacity>
              }
               {(booking.status === 'approved' && booking.is_event_due && currentUser && currentUser.role === 'client') &&
-              <TouchableOpacity style={{backgroundColor:'dodgerblue',elevation:4,flexDirection:'row', alignItems:'center',gap:6,justifyContent:'center', marginHorizontal:10, borderRadius:40, padding:15}}onPress={()=>{handleCreateInvoice('final_payment')}}>
+              <TouchableOpacity style={{
+                backgroundColor:'dodgerblue',
+                elevation:4,
+                flexDirection:'row',
+                alignItems:'center',
+                gap:6,
+                justifyContent:'center',
+                marginHorizontal:10,
+                borderRadius:40,
+                padding:15
+                }}onPress={()=>{handleCreateInvoice('final_payment')}}>
                {!confirming && <Ionicons size={20} name='card' color={"#00fa9a"}/>}
-                 <Text style={{fontSize:14, fontWeight:'bold', color:'#fff', textAlign:'center'}}>{isLoading && <ActivityIndicator size={25} color='#fff'/>}{isLoading ? '' :'Pay Now'}</Text>
+                 <Text style={{
+                    fontSize:14,
+                    fontWeight:'bold',
+                    color:'#fff',
+                    textAlign:'center'}}>{isLoading && <ActivityIndicator size={25} color='#fff'/>}{isLoading ? '' :'Pay Now'}</Text>
 
               </TouchableOpacity>
              }
@@ -133,9 +148,23 @@ export default function BookingDetail(){
                  <Text style={{fontSize:15, fontWeight:'bold', color:'#fff', textAlign:'center'}}>{rejecting && <ActivityIndicator size={25} color='#fff'/>}{rejecting ? '' :'Reject Booking'}</Text>
 
               </TouchableOpacity>
-             }
-
+            }
+                {
+                    booking.status === 'completed' &&
+                    currentUser &&
+                    currentUser.role === 'client' &&
+                    !booking.is_reviewed &&
+                    <PostReview onSuccessReview={refetch} booking={booking}/>
+                }
+                {booking.is_reviewed && booking.reviews.rating &&
+                <View style={{
+                    paddingLeft:20
+                }}>
+                    <Stars size={26} rating={booking.reviews.rating} />
+                </View>
+                }
              </View>
+
              {booking.latitude && booking.longitude &&
              <View style={{marginTop:20,height:Dimensions.get('window').height * 0.5,backgroundColor:'blue', borderRadius:20, overflow:'hidden', margin:15}}>
                  <MapView

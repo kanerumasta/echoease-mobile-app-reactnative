@@ -96,6 +96,7 @@ export const ArtistInSchema = z.object({
   rates: z.array(RateSchema),
   stage_name: z.string().nullable(),
   is_new: z.boolean(),
+  is_available:z.boolean(),
   created_at: z.string(),
   updated_at: z.string(),
 });

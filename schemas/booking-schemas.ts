@@ -4,6 +4,7 @@ import { Time } from "@internationalized/date";
 import { ArtistInSchema, RateSchema } from "./artist-schemas";
 import { UserSchema } from "./user-schemas";
 import { DisputeSchema } from "./dispute-schemas";
+import { FeedbacksInSchema } from "./review-schemas";
 
 export const TimeSlotSchema = z.object({
   start_time: z.string(),
@@ -85,7 +86,8 @@ export const BookInSchema = z.object({
   disputes : z.array(DisputeSchema),
   venue:z.string().nullable(),
   latitude:z.number().nullable(),
-  longitude:z.number().nullable()
+  longitude:z.number().nullable(),
+  reviews:FeedbacksInSchema
 });
 
 export const PaginatedBookInSchema = z.object({

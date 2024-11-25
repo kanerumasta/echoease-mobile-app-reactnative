@@ -7,7 +7,12 @@ const reviewsApiSlice = apiSlice.injectEndpoints({
     fetchArtistRating: builder.query<{ rating__avg: number }, number>({
       query: (artistId) => `/reviews/artist-reviews/${artistId}`,
     }),
-    postAReview: builder.mutation({
+    postAReview: builder.mutation<any, {
+        booking:number,
+        rating:number,
+        client_id:number,
+        feedback:string
+    }>({
       query: (data) => ({
         method: "POST",
         url: "/reviews/",

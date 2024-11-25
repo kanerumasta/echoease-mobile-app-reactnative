@@ -7,18 +7,21 @@ import { View, useWindowDimensions } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { Followers } from './followers';
 import { Following } from './following';
+import ConnectionsTab from './connectionsTab';
 
 type Route ={
-    key:"followers"|"following",
+    key:"followers"|"following"|"connections",
     title:string,
-    artistId:string
+    artistId:number
 }
 const renderScene = ({ route }:{route:Route}) => {
     switch (route.key) {
       case 'followers':
         return <Followers artistId={route.artistId}/>;
       case 'following':
-        return <Following artistId={route.artistId} />;
+        return <Following artistId={route.artistId.toString()} />;
+        case 'connections':
+            return <ConnectionsTab artistId={route.artistId.toString()}/>;
       default:
         return null;
     }
@@ -32,6 +35,7 @@ export default function FollowersTabs({artistId}:{artistId:number}) {
   const routes:Route[] = [
     { key: 'followers', title: 'Following' , artistId},
     { key: 'following', title: 'Followers', artistId },
+    { key: 'connections', title: 'Connections', artistId },
 
   ];
   return (

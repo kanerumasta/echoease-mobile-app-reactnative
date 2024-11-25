@@ -12,9 +12,9 @@ export const Following = ({artistId}:{artistId:string}) => {
         <FlatList
             data={following}
             renderItem={({item})=>(
-                <TouchableOpacity onPress={()=>router.push(`/echoees/${item.slug}`)}>
-                    <UserCard imageSrc={`${process.env.EXPO_PUBLIC_BACKEND_URL}${item.user.profile.profile_image}`} user={item.user}/>
-                </TouchableOpacity>
+
+                    <UserCard  imageSrc={`${process.env.EXPO_PUBLIC_BACKEND_URL}${item.user.profile.profile_image}`} user={item.user}/>
+
             )}
         />
     </View>

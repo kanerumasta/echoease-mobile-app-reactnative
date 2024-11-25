@@ -64,7 +64,7 @@ const Card = ({request}:{request:z.infer<typeof ConnectionRequestSchema>}) => {
     return <View style={styles.cardContainer
 
     }>
-        <Image style={styles.image} source={{uri:`${process.env.BACKEND_URL}${sender.user.profile.profile_image}`}}/>
+        <Image style={styles.image} source={{uri:`${process.env.EXPO_PUBLIC_BACKEND_URL}${sender.user.profile.profile_image}`}}/>
         <View style={{
             flex:1,
 

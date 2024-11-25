@@ -15,9 +15,6 @@ const Profile = () => {
 
   const {data: current_user, isLoading} = useGetUserQuery();
 
-  const handlePress = () => {
-     router.back()
-  }
   if (isLoading){
     return <View>
       <Text>Loading</Text>

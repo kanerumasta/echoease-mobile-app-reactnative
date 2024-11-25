@@ -61,7 +61,6 @@ export default function RootLayout() {
                 <Stack.Screen name='change-password' options={{headerShown:false}}/>
                 <Stack.Screen name='feedbacks/[id]' options={{title:'Feedbacks'}}/>
                 <Stack.Screen name='forgot-password' options={{headerShown:false}}/>
-                <Stack.Screen name='echoees/book' options={{presentation:'formSheet'}}/>
                 <Stack.Screen name='messages/index' options={{headerShown:false}}/>
                 <Stack.Screen name='messages/[code]' options={{headerShown:false}}/>
                 <Stack.Screen name='transactions/[id]' options={{headerShown:false}}/>

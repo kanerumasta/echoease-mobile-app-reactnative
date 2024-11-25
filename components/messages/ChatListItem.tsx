@@ -36,7 +36,7 @@ export const ChatListItem = ({chat}:ChatListItemProps) => {
                     fontSize:12,
                     fontWeight:'bold',
                     color:'rgba(0,0,0,0.3)'
-                }}>2:30 PM</Text>
+                }}>{chat.last_message_time}</Text>
             </View>
         <Text
             style={{
@@ -44,7 +44,7 @@ export const ChatListItem = ({chat}:ChatListItemProps) => {
                 color:'rgba(0,0,0,0.4)',
                 marginTop:5
             }}
-        >This is last message</Text>
+        >{chat.last_message.slice(0,30)}{chat.last_message.length > 30 && "..."}</Text>
         </View>
     </TouchableOpacity>
 }

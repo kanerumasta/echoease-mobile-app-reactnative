@@ -31,7 +31,6 @@ const Card = ({count,label}:{count:number, label:string}) => {
 const styles = StyleSheet.create({
     container:{
         zIndex:100,
-        backgroundColor:'rgba(255,255,255,0.5)',
 
         justifyContent: 'center',
         borderRadius:10,
@@ -45,8 +44,8 @@ const styles = StyleSheet.create({
         alignItems:'center'
     },
     countText:{
-        fontSize:50,
+        fontSize:30,
         fontWeight:'bold',
-        color:'#4b4cff'
+        color:'rgba(0,0,0,0.7)'
     }
 })
